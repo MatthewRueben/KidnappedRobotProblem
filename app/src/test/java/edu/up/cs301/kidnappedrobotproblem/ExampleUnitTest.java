@@ -1,4 +1,4 @@
-package edu.up.kidnappedrobotproblem;
+package edu.up.cs301.kidnappedrobotproblem;
 
 import org.junit.Test;
 

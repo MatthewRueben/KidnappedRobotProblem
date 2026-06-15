@@ -1,4 +1,4 @@
-package edu.up.kidnappedrobotproblem;
+package edu.up.cs301.kidnappedrobotproblem;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("edu.up.kidnappedrobotproblem", appContext.getPackageName());
+        assertEquals("edu.up.cs301.kidnappedrobotproblem", appContext.getPackageName());
     }
 }
