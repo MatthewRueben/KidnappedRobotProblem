@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "edu.up.kidnappedrobotproblem"
+    namespace = "edu.up.cs301.kidnappedrobotproblem"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "edu.up.kidnappedrobotproblem"
+        applicationId = "edu.up.cs301.kidnappedrobotproblem"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
