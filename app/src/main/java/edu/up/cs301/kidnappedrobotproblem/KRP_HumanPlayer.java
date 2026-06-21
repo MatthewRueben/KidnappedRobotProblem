@@ -1,7 +1,6 @@
 package edu.up.cs301.kidnappedrobotproblem;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,7 +22,10 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
 
     // These variables will reference widgets that will be modified during play
     private TextView    movementAndSensorReadoutView    = null;
+    private Button      turnLeftButton                  = null;
     private Button      forwardButton                   = null;
+    private Button      turnRightButton                 = null;
+
     private KRP_MapView mapView                         = null;
 
     // the android activity that we are running
@@ -75,14 +77,26 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
      * this method gets called when the user clicks a button. It
      * creates a new KRP_...Action and sends it to the game.
      *
-     * @param button
-     * 		the button that was clicked
+     * @param clickedView
+     * 		the View (e.g., Button) that was clicked
      */
-    public void onClick(View button) {
-        GameAction action;
-        action = new KRP_MoveAction(this);
-        Log.d("KRP", "Move forward.");
-        this.game.sendAction(action);
+    public void onClick(View clickedView) {
+        int idOfClickedView = clickedView.getId();
+        if (idOfClickedView == R.id.turnLeftButton) {
+            GameAction action;
+            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.TURN_LEFT);
+            this.game.sendAction(action);
+        }
+        else if (idOfClickedView == R.id.forwardButton) {
+            GameAction action;
+            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.GO_FORWARD);
+            this.game.sendAction(action);
+        }
+        else if (idOfClickedView == R.id.turnRightButton) {
+            GameAction action;
+            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.TURN_RIGHT);
+            this.game.sendAction(action);
+        }
     }// onClick
 
     /**
@@ -102,11 +116,15 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
 
         //Initialize the widget reference member variables
         this.movementAndSensorReadoutView   = (TextView)activity.findViewById(R.id.movementAndSensorReadout);
+        this.turnLeftButton                 = (Button)activity.findViewById(R.id.turnLeftButton);
         this.forwardButton                  = (Button)activity.findViewById(R.id.forwardButton);
+        this.turnRightButton                = (Button)activity.findViewById(R.id.turnRightButton);
         this.mapView                        = (KRP_MapView)activity.findViewById(R.id.mapView);
 
         //Listen for button presses
+        turnLeftButton.setOnClickListener(this);
         forwardButton.setOnClickListener(this);
+        turnRightButton.setOnClickListener(this);
 
     }//setAsGui
 

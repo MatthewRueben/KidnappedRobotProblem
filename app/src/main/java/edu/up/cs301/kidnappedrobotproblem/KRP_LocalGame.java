@@ -41,14 +41,44 @@ public class KRP_LocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if (action instanceof KRP_MoveAction) {
-            // Move robot forward by one grid cell.
-            float gridCellSize = 100f;
-            float botPoseX_Old = this.gameState.getBotPoseX();
-            float botPoseX_New = botPoseX_Old + gridCellSize;
-            this.gameState.setBotPoseX(botPoseX_New);
+            KRP_MoveAction krpMoveAction = (KRP_MoveAction) action;
 
-            String historyEntryForForward = "Moved forward.";
-            this.gameState.appendToHistory(historyEntryForForward);
+            KRP_MoveAction.Choice choice = krpMoveAction.getChoice();
+
+            String historyEntry = "";
+            switch (choice) {
+                case GO_FORWARD:
+                    float gridCellSize = 100f;
+
+                    this.gameState.moveBotForward(gridCellSize);
+                    this.gameState.moveBotForward(gridCellSize);
+
+                    historyEntry = "Moved forward.";
+
+                    break;
+                case TURN_LEFT:
+                    try {
+                        this.gameState.turnBotLeft();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    historyEntry = "Turned left.";
+
+                    break;
+                case TURN_RIGHT:
+                    try {
+                        this.gameState.turnBotRight();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    historyEntry = "Turned right.";
+
+                    break;
+            }
+
+            this.gameState.appendToHistory(historyEntry);
 
             return true;
         }

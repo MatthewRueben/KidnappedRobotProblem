@@ -38,7 +38,13 @@ public class KRP_MapView extends SurfaceView {
     {
         if (this.gameState != null) {
             float botPoseX = this.gameState.getBotPoseX();
-            canvas.drawCircle(botPoseX, 100f, 30f, this.robotEdgePaint);
+            float botPoseY = this.gameState.getBotPoseY();
+            KRP_GameState.Direction botPoseHeading = this.gameState.getBotPoseHeading();
+
+            canvas.drawCircle(botPoseX, botPoseY, 30f, this.robotEdgePaint);
+
+            float arcSweepDegrees = 40f;
+            canvas.drawArc(botPoseX - 20f, botPoseY - 20f, botPoseX + 20f, botPoseY + 20f, botPoseHeading.angle - (arcSweepDegrees / 2), arcSweepDegrees, false, this.robotEdgePaint);
         }
 
         Log.d("KRP", "Drew.");
