@@ -1,7 +1,5 @@
 package edu.up.cs301.kidnappedrobotproblem;
 
-import android.util.Log;
-
 import java.util.Random;
 
 import edu.up.cs301.game.GamePlayer;
@@ -40,10 +38,10 @@ public class KRP_LocalGame extends LocalGame {
      */
     @Override
     protected boolean makeMove(GameAction action) {
-        if (action instanceof KRP_MoveAction) {
-            KRP_MoveAction krpMoveAction = (KRP_MoveAction) action;
+        if (action instanceof MoveAction) {
+            MoveAction krpMoveAction = (MoveAction) action;
 
-            KRP_MoveAction.Choice choice = krpMoveAction.getChoice();
+            MoveAction.Choice choice = krpMoveAction.getChoice();
 
             String historyEntry = "";
             switch (choice) {

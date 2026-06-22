@@ -26,7 +26,7 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
     private Button      forwardButton                   = null;
     private Button      turnRightButton                 = null;
 
-    private KRP_MapView mapView                         = null;
+    private MapView mapView                         = null;
 
     // the android activity that we are running
     private GameMainActivity myActivity;
@@ -84,17 +84,17 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
         int idOfClickedView = clickedView.getId();
         if (idOfClickedView == R.id.turnLeftButton) {
             GameAction action;
-            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.TURN_LEFT);
+            action = new MoveAction(this, MoveAction.Choice.TURN_LEFT);
             this.game.sendAction(action);
         }
         else if (idOfClickedView == R.id.forwardButton) {
             GameAction action;
-            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.GO_FORWARD);
+            action = new MoveAction(this, MoveAction.Choice.GO_FORWARD);
             this.game.sendAction(action);
         }
         else if (idOfClickedView == R.id.turnRightButton) {
             GameAction action;
-            action = new KRP_MoveAction(this, KRP_MoveAction.Choice.TURN_RIGHT);
+            action = new MoveAction(this, MoveAction.Choice.TURN_RIGHT);
             this.game.sendAction(action);
         }
     }// onClick
@@ -119,7 +119,7 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
         this.turnLeftButton                 = (Button)activity.findViewById(R.id.turnLeftButton);
         this.forwardButton                  = (Button)activity.findViewById(R.id.forwardButton);
         this.turnRightButton                = (Button)activity.findViewById(R.id.turnRightButton);
-        this.mapView                        = (KRP_MapView)activity.findViewById(R.id.mapView);
+        this.mapView                        = (MapView)activity.findViewById(R.id.mapView);
 
         //Listen for button presses
         turnLeftButton.setOnClickListener(this);

@@ -11,13 +11,13 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class KRP_MapView extends SurfaceView {
+public class MapView extends SurfaceView {
 
     private KRP_GameState gameState;
 
     Paint robotEdgePaint = new Paint();
 
-    public KRP_MapView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public MapView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         setWillNotDraw(false); // So onDraw() gets called.
