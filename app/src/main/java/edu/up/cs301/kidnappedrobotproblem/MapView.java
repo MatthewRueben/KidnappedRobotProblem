@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -15,16 +16,11 @@ public class MapView extends SurfaceView {
 
     private KRP_GameState gameState;
 
-    Paint robotEdgePaint = new Paint();
 
     public MapView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         setWillNotDraw(false); // So onDraw() gets called.
-
-        this.robotEdgePaint.setColor(Color.GRAY);
-        this.robotEdgePaint.setStyle(Paint.Style.STROKE);
-        this.robotEdgePaint.setStrokeWidth(5f);
 
         setBackgroundColor(Color.WHITE);
     }
@@ -37,14 +33,18 @@ public class MapView extends SurfaceView {
     public void onDraw(Canvas canvas)
     {
         if (this.gameState != null) {
-            float botPoseX = this.gameState.getBotPoseX();
-            float botPoseY = this.gameState.getBotPoseY();
-            KRP_GameState.Direction botPoseHeading = this.gameState.getBotPoseHeading();
+            float mapLeft = 200f;
+            float mapTop = 300f;
+            float mapCellSize = 100f;
 
-            canvas.drawCircle(botPoseX, botPoseY, 30f, this.robotEdgePaint);
+            Robot theRobot = this.gameState.getRobot();
+            float robotLeft = mapLeft + theRobot.getPoseX() * mapCellSize;
+            float robotTop = mapTop + theRobot.getPoseY() * mapCellSize;
+            float robotRight = robotLeft + mapCellSize;
+            float robotBottom = robotTop + mapCellSize;
+            RectF robotBounds = new RectF(robotLeft, robotTop, robotRight, robotBottom);
+            this.gameState.getRobot().drawIn(canvas, robotBounds);
 
-            float arcSweepDegrees = 40f;
-            canvas.drawArc(botPoseX - 20f, botPoseY - 20f, botPoseX + 20f, botPoseY + 20f, botPoseHeading.angle - (arcSweepDegrees / 2), arcSweepDegrees, false, this.robotEdgePaint);
         }
 
         Log.d("KRP", "Drew.");

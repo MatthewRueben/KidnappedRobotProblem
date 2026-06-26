@@ -46,17 +46,15 @@ public class KRP_LocalGame extends LocalGame {
             String historyEntry = "";
             switch (choice) {
                 case GO_FORWARD:
-                    float gridCellSize = 100f;
-
-                    this.gameState.moveBotForward(gridCellSize);
-                    this.gameState.moveBotForward(gridCellSize);
+                    this.gameState.moveRobotForward();
+                    this.gameState.moveRobotForward();
 
                     historyEntry = "Moved forward.";
 
                     break;
                 case TURN_LEFT:
                     try {
-                        this.gameState.turnBotLeft();
+                        this.gameState.turnRobotLeft();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -66,7 +64,7 @@ public class KRP_LocalGame extends LocalGame {
                     break;
                 case TURN_RIGHT:
                     try {
-                        this.gameState.turnBotRight();
+                        this.gameState.turnRobotRight();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
