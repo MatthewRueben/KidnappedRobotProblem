@@ -3,10 +3,8 @@ package edu.up.cs301.kidnappedrobotproblem;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +37,8 @@ public class MapView extends SurfaceView {
 
             Robot theRobot = this.gameState.getRobot();
             Map.Pose robotPose = theRobot.getPose();
-            float robotLeft = mapLeft + robotPose.location.col * mapCellSize;
-            float robotTop = mapTop + robotPose.location.row * mapCellSize;
+            float robotLeft = mapLeft + robotPose.location.getColIndex() * mapCellSize;
+            float robotTop = mapTop + robotPose.location.getRowIndex() * mapCellSize;
             float robotRight = robotLeft + mapCellSize;
             float robotBottom = robotTop + mapCellSize;
             RectF robotBounds = new RectF(robotLeft, robotTop, robotRight, robotBottom);

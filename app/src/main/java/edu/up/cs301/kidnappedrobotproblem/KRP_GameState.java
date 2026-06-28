@@ -15,7 +15,9 @@ public class KRP_GameState extends GameState {
         this.whoseTurnID = 0;
         this.map = new Map();
 
-        Map.Location startingLocation = this.map.new Location(0, 0);
+        int startingColIndex = 0;
+        int startingRowIndex = 0;
+        Map.Location startingLocation = this.map.new Location(startingColIndex, startingRowIndex);
         Map.Direction startingHeading = Map.Direction.UP;
         Map.Pose startingPose = this.map.new Pose(startingLocation, startingHeading);
         this.robot = new Robot(startingPose);

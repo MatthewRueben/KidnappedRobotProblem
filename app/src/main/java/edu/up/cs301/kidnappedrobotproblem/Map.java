@@ -3,33 +3,83 @@ package edu.up.cs301.kidnappedrobotproblem;
 import android.util.Log;
 
 public class Map {
-    public class Cell {
+    public enum Cell {
+        CHARGER (true, true),
+        EMPTY   (true, false),
+        BLOCKED (false, false);
 
+        public final boolean canEnter;
+        public final boolean isCharger;
+        Cell(boolean canEnter, boolean isCharger) {
+            this.canEnter = canEnter;
+            this.isCharger = isCharger;
+        }
     }
 
-    public Map () {
+    private final Cell[][] map;
 
+    public Map() {
+        int numCols = 5;
+        int numRows = 3;
+        this.map = new Cell[numCols][numRows];
+        for (int colIndex = 0; colIndex < numCols; colIndex++) {
+            for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
+                this.map[colIndex][rowIndex] = Cell.EMPTY;
+            }
+        }
     }
 
-    public Map (Map other) {
-
+    public Map(Map other) {
+        int numCols = other.map.length;
+        int numRows = other.map[0].length;
+        this.map = new Cell[numCols][numRows];
+        for (int colIndex = 0; colIndex < numCols; colIndex++) {
+            for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
+                this.map[colIndex][rowIndex] = other.map[colIndex][rowIndex];
+            }
+        }
     }
 
-    public class Location {
-        public int col;
-        public int row;
+    /* Immutable class. */
+    public final class Location {
+        private final int colIndex;
+        private final int rowIndex;
 
-        public Location(int col, int row) {
-            this.col = col;
-            this.row = row;
+        public Location(int colIndex, int rowIndex) {
+            boolean indicesAreOnMap = this.checkIfIndicesAreOnMap(colIndex, rowIndex);
+            if (!indicesAreOnMap) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+
+            Cell cellAtIndices = Map.this.map[colIndex][rowIndex];
+            if (!cellAtIndices.canEnter) {
+                throw new UnenterableCellException();
+            }
+
+            this.colIndex = colIndex;
+            this.rowIndex = rowIndex;
         }
 
+        private boolean checkIfIndicesAreOnMap(int colIndex, int rowIndex) {
+            if (    colIndex >= 0 &&
+                    rowIndex >= 0 &&
+                    colIndex < Map.this.map.length &&
+                    rowIndex < Map.this.map[colIndex].length) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        /* Assumes the other Location has valid indices. */
         public Location(Location other) {
-            this.col = other.col;
-            this.row = other.row;
+            this.colIndex = other.colIndex;
+            this.rowIndex = other.rowIndex;
         }
 
-        // TODO: add bounds checking by looking at the enclosing Map.
+        public int getColIndex() { return this.colIndex; }
+        public int getRowIndex() { return this.rowIndex; }
     }
 
     public enum Direction {
@@ -38,12 +88,12 @@ public class Map {
         LEFT    (-1, 0, 180f),
         RIGHT   ( 1, 0, 0f);
 
-        public final int dCol;
-        public final int dRow;
+        public final int dColIndex;
+        public final int dRowIndex;
         public final float angle;
-        Direction(int dCol, int dRow, float angle) {
-            this.dCol = dCol;
-            this.dRow = dRow;
+        Direction(int dColIndex, int dRowIndex, float angle) {
+            this.dColIndex = dColIndex;
+            this.dRowIndex = dRowIndex;
             this.angle = angle;
         }
 
@@ -79,14 +129,16 @@ public class Map {
 
         public Pose(Pose other) {
             this.location = new Location(other.location);
-            this.heading = other.heading; // Because it's a constant.
+            this.heading = other.heading; // Deep copy not needed because it's a constant.
         }
 
         public void move(MoveAction.Movement movement) {
             switch (movement) {
                 case GO_FORWARD:
-                    this.location.col += this.heading.dCol;
-                    this.location.row += this.heading.dRow;
+                    int newColIndex = this.location.getColIndex() + this.heading.dColIndex;
+                    int newRowIndex = this.location.getRowIndex() + this.heading.dRowIndex;
+                    Location newLocation = new Location(newColIndex, newRowIndex);
+                    this.location = newLocation;
                     break;
                 case TURN_LEFT:
                     Direction headingTurnedLeft = this.heading.getLeftTurnResult();
