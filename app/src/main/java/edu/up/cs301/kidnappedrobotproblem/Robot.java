@@ -1,7 +1,6 @@
 package edu.up.cs301.kidnappedrobotproblem;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -14,35 +13,33 @@ public class Robot implements Drawable{
         LEFT    (-1, 0, 180f),
         RIGHT   ( 1, 0, 0f);
 
-        public final int x;
-        public final int y;
+        public final int dx;
+        public final int dy;
         public final float angle;
-        Direction(int x, int y, float angle) {
-            this.x = x;
-            this.y = y;
+        Direction(int dx, int dy, float angle) {
+            this.dx = dx;
+            this.dy = dy;
             this.angle = angle;
         }
 
-        public Direction getLeftTurnResult() throws Exception {
+        public Direction getLeftTurnResult() {
             switch (this) {
                 case UP:    return LEFT;
                 case LEFT:  return DOWN;
                 case DOWN:  return RIGHT;
                 case RIGHT: return UP;
+                default:    return null; // E.g., if (this == null).
             }
-
-            throw new Exception("Direction was null or something.");
         }
 
-        public Direction getRightTurnResult() throws Exception {
+        public Direction getRightTurnResult() {
             switch (this) {
                 case UP:    return RIGHT;
-                case RIGHT:  return DOWN;
+                case RIGHT: return DOWN;
                 case DOWN:  return LEFT;
-                case LEFT: return UP;
+                case LEFT:  return UP;
+                default:    return null; // E.g., if (this == null).
             }
-
-            throw new Exception("Direction was null or something.");
         }
     }
 
@@ -70,8 +67,8 @@ public class Robot implements Drawable{
 
     /* Setters */
     public void moveForward() {
-        this.poseX += this.poseHeading.x;
-        this.poseY += this.poseHeading.y;
+        this.poseX += this.poseHeading.dx;
+        this.poseY += this.poseHeading.dy;
     }
 
     public void turnLeft() throws Exception {
