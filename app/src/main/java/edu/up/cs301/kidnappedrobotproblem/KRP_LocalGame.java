@@ -1,5 +1,7 @@
 package edu.up.cs301.kidnappedrobotproblem;
 
+import android.util.Log;
+
 import java.util.Random;
 
 import edu.up.cs301.game.GamePlayer;
@@ -41,40 +43,10 @@ public class KRP_LocalGame extends LocalGame {
         if (action instanceof MoveAction) {
             MoveAction krpMoveAction = (MoveAction) action;
 
-            MoveAction.Choice choice = krpMoveAction.getChoice();
+            MoveAction.Movement movement = krpMoveAction.getMovement();
 
-            String historyEntry = "";
-            switch (choice) {
-                case GO_FORWARD:
-                    this.gameState.moveRobotForward();
-                    this.gameState.moveRobotForward();
-
-                    historyEntry = "Moved forward.";
-
-                    break;
-                case TURN_LEFT:
-                    try {
-                        this.gameState.turnRobotLeft();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    historyEntry = "Turned left.";
-
-                    break;
-                case TURN_RIGHT:
-                    try {
-                        this.gameState.turnRobotRight();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    historyEntry = "Turned right.";
-
-                    break;
-            }
-
-            this.gameState.appendToHistory(historyEntry);
+            this.gameState.moveRobot(movement);
+            this.gameState.appendToHistory(movement.toString());
 
             return true;
         }

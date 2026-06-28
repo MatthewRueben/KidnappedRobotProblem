@@ -1,6 +1,7 @@
 package edu.up.cs301.kidnappedrobotproblem;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -84,17 +85,17 @@ public class KRP_HumanPlayer extends GameHumanPlayer implements OnClickListener 
         int idOfClickedView = clickedView.getId();
         if (idOfClickedView == R.id.turnLeftButton) {
             GameAction action;
-            action = new MoveAction(this, MoveAction.Choice.TURN_LEFT);
+            action = new MoveAction(this, MoveAction.Movement.TURN_LEFT);
             this.game.sendAction(action);
         }
         else if (idOfClickedView == R.id.forwardButton) {
             GameAction action;
-            action = new MoveAction(this, MoveAction.Choice.GO_FORWARD);
+            action = new MoveAction(this, MoveAction.Movement.GO_FORWARD);
             this.game.sendAction(action);
         }
         else if (idOfClickedView == R.id.turnRightButton) {
             GameAction action;
-            action = new MoveAction(this, MoveAction.Choice.TURN_RIGHT);
+            action = new MoveAction(this, MoveAction.Movement.TURN_RIGHT);
             this.game.sendAction(action);
         }
     }// onClick

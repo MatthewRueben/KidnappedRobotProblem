@@ -38,16 +38,15 @@ public class MapView extends SurfaceView {
             float mapCellSize = 100f;
 
             Robot theRobot = this.gameState.getRobot();
-            float robotLeft = mapLeft + theRobot.getPoseX() * mapCellSize;
-            float robotTop = mapTop + theRobot.getPoseY() * mapCellSize;
+            Map.Pose robotPose = theRobot.getPose();
+            float robotLeft = mapLeft + robotPose.location.col * mapCellSize;
+            float robotTop = mapTop + robotPose.location.row * mapCellSize;
             float robotRight = robotLeft + mapCellSize;
             float robotBottom = robotTop + mapCellSize;
             RectF robotBounds = new RectF(robotLeft, robotTop, robotRight, robotBottom);
             this.gameState.getRobot().drawIn(canvas, robotBounds);
 
         }
-
-        Log.d("KRP", "Drew.");
 
     }
 }

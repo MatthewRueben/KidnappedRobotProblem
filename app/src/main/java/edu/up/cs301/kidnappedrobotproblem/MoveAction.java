@@ -5,20 +5,20 @@ import edu.up.cs301.game.actionMsg.GameAction;
 
 public class MoveAction extends GameAction {
 
-    public enum Choice {
+    public enum Movement {
         GO_FORWARD,
         TURN_LEFT,
         TURN_RIGHT;
     }
 
-    private final Choice choice;
+    private final Movement movement;
 
-    public MoveAction(GamePlayer player, Choice choice) {
+    public MoveAction(GamePlayer player, Movement movement) {
         super(player);
 
-        this.choice = choice;
+        this.movement = movement;
     }
 
-    public Choice getChoice() { return this.choice; }
+    public Movement getMovement() { return this.movement; }
 
 }
