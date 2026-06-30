@@ -8,8 +8,8 @@ public class Map {
         EMPTY   (true, false),
         BLOCKED (false, false);
 
-        public final boolean canEnter;
-        public final boolean isCharger;
+        private final boolean canEnter;
+        private final boolean isCharger;
         Cell(boolean canEnter, boolean isCharger) {
             this.canEnter = canEnter;
             this.isCharger = isCharger;
@@ -19,14 +19,17 @@ public class Map {
     private final Cell[][] map;
 
     public Map() {
-        int numCols = 5;
-        int numRows = 3;
+        int numCols = 3;
+        int numRows = 1;
         this.map = new Cell[numCols][numRows];
-        for (int colIndex = 0; colIndex < numCols; colIndex++) {
-            for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
-                this.map[colIndex][rowIndex] = Cell.EMPTY;
-            }
-        }
+        this.map[0][0] = Cell.EMPTY;
+        this.map[1][0] = Cell.CHARGER;
+        this.map[2][0] = Cell.BLOCKED;
+//        for (int colIndex = 0; colIndex < numCols; colIndex++) {
+//            for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
+//                this.map[colIndex][rowIndex] = Cell.EMPTY;
+//            }
+//        }
     }
 
     public Map(Map other) {
@@ -40,20 +43,31 @@ public class Map {
         }
     }
 
+    /* Getters */
+    private Cell getCellAt(Location location) {
+        Cell theCell = this.map[location.colIndex][location.rowIndex];
+        return theCell;
+    }
+    public boolean canEnterAt(Location location) {
+        Cell theCell = this.getCellAt(location);
+        boolean canEnter = theCell.canEnter;
+        return canEnter;
+    }
+    public boolean isChargerAt(Location location) {
+        Cell theCell = this.getCellAt(location);
+        boolean isCharger = theCell.isCharger;
+        return isCharger;
+    }
+
     /* Immutable class. */
     public final class Location {
         private final int colIndex;
         private final int rowIndex;
 
-        public Location(int colIndex, int rowIndex) {
+        public Location(int colIndex, int rowIndex) throws OutsideOfMapBoundsException {
             boolean indicesAreOnMap = this.checkIfIndicesAreOnMap(colIndex, rowIndex);
             if (!indicesAreOnMap) {
-                throw new ArrayIndexOutOfBoundsException();
-            }
-
-            Cell cellAtIndices = Map.this.map[colIndex][rowIndex];
-            if (!cellAtIndices.canEnter) {
-                throw new UnenterableCellException();
+                throw new OutsideOfMapBoundsException();
             }
 
             this.colIndex = colIndex;
@@ -132,12 +146,17 @@ public class Map {
             this.heading = other.heading; // Deep copy not needed because it's a constant.
         }
 
-        public void move(MoveAction.Movement movement) {
+        public void move(MoveAction.Movement movement) throws UnenterableCellException, OutsideOfMapBoundsException {
             switch (movement) {
                 case GO_FORWARD:
                     int newColIndex = this.location.getColIndex() + this.heading.dColIndex;
                     int newRowIndex = this.location.getRowIndex() + this.heading.dRowIndex;
                     Location newLocation = new Location(newColIndex, newRowIndex);
+
+                    if (!Map.this.canEnterAt(newLocation)) {
+                        throw new UnenterableCellException();
+                    }
+
                     this.location = newLocation;
                     break;
                 case TURN_LEFT:

@@ -16,7 +16,7 @@ public class Robot implements Drawable {
     public Map.Pose getPose() { return this.pose; }
 
     /* Setters */
-    public void move(MoveAction.Movement movement) {
+    public void move(MoveAction.Movement movement) throws UnenterableCellException, OutsideOfMapBoundsException {
         this.pose.move(movement);
     }
 

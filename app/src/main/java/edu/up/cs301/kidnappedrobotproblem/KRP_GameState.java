@@ -11,7 +11,7 @@ public class KRP_GameState extends GameState {
 
     private String history;
 
-    public KRP_GameState() {
+    public KRP_GameState() throws OutsideOfMapBoundsException {
         this.whoseTurnID = 0;
         this.map = new Map();
 
@@ -43,7 +43,8 @@ public class KRP_GameState extends GameState {
 
     /* Setters. */
     public void setWhoseTurnID(int newWhoseTurnID) { this.whoseTurnID = newWhoseTurnID; }
-    public void moveRobot(MoveAction.Movement movement)  { this.robot.move(movement); }
+    public void moveRobot(MoveAction.Movement movement) throws UnenterableCellException, OutsideOfMapBoundsException {
+        this.robot.move(movement); }
     public void appendToHistory(String newHistory) {
         this.history += newHistory;
         this.history += "\n";

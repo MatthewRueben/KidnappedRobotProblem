@@ -22,7 +22,11 @@ public class KRP_LocalGame extends LocalGame {
      * This ctor creates a new game state
      */
     public KRP_LocalGame() {
-        this.gameState = new KRP_GameState();
+        try {
+            this.gameState = new KRP_GameState();
+        } catch (OutsideOfMapBoundsException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -45,10 +49,24 @@ public class KRP_LocalGame extends LocalGame {
 
             MoveAction.Movement movement = krpMoveAction.getMovement();
 
-            this.gameState.moveRobot(movement);
-            this.gameState.appendToHistory(movement.toString());
+            boolean isValidMove;
+            String historyEntry;
+            try {
+                this.gameState.moveRobot(movement);
+                isValidMove = true;
+                historyEntry = movement.toString();
+            } catch (UnenterableCellException e) {
+                isValidMove = true; // Because the history is part of the KRP_GameState, I want it to be sent to the other players.
+                                    // This player will lose their turn.
+                historyEntry = "Cannot go there! It's an obstacle.";
+            } catch (OutsideOfMapBoundsException e) {
+                isValidMove = true; // Because the history is part of the KRP_GameState, I want it to be sent to the other players.
+                                    // This player will lose their turn.
+                historyEntry = "Cannot go there! It's off the map.";
+            }
+            this.gameState.appendToHistory(historyEntry);
 
-            return true;
+            return isValidMove;
         }
         else {
             return false;
